@@ -8,7 +8,7 @@ bot = telebot.TeleBot(token)
 
 hello_list = ["привет", "здаров", "ку", "здарова", "здравствуйте", "hello", "hey", "шалом", "салам", "прив", "здрасьте"]
 flag = False
-current_city = ''
+current_city = 'крым'
 current_weather = {}
 
 
