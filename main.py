@@ -31,8 +31,12 @@ def get_weather(city):
         'format': 'json',
         'geocode': city
     }
-
-    response = requests.get(URL_geocoder, params=params)
+    
+    try:
+        response = requests.get(URL_geocoder, params=params)
+    except Exception as err:
+        return err
+    
     response = response.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
         'pos'].split()
     lat = response[1]
@@ -43,9 +47,11 @@ def get_weather(city):
               'lang': 'ru_RU',
               'limit': '3',
               'hours': 'true'}
-
-    answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
-    return answer.json()
+    try:
+        answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
+    except Exception as err:
+        return err
+    return 1
 
 
 def get_temp_graph(current_weather, day_number):
@@ -125,6 +131,7 @@ def get_text_message(message):
         current_city = message.text
         try:
             current_weather = get_weather('крым')
+            bot.send_message(message.from_user.id, get_weather('крым'))
         except Exception:
             bot.send_message(message.from_user.id, 'Проверь корректность написания населенного пункта и повтори '
                                                    'попытку - /w.')
