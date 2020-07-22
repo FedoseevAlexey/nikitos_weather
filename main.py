@@ -8,7 +8,7 @@ bot = telebot.TeleBot(token)
 
 hello_list = ["привет", "здаров", "ку", "здарова", "здравствуйте", "hello", "hey", "шалом", "салам", "прив", "здрасьте"]
 flag = False
-current_city = 'крым'
+current_city = ''
 current_weather = {}
 
 
@@ -19,11 +19,9 @@ def get_weather(city):
         и возвращает json с параметрами погоды данных координат.
     """
     URL_geocoder = 'https://geocode-maps.yandex.ru/1.x'
-#     KEY_geocoder = os.environ.get('KEY_GEO')
-    KEY_geocoder = 'c9f03f5f-1832-4d23-b829-9ed2d2939857'
+    KEY_geocoder = os.environ.get('KEY_GEO')
     URL_weather = 'https://api.weather.yandex.ru/v2/forecast'
-#     KEY_weather = os.environ.get('KEY_WEATHER')
-    KEY_weather = '30b3a1e1-af9d-430f-a9ef-3c2d91cbc427'
+    KEY_weather = os.environ.get('KEY_WEATHER')
 
     params = {
         'apikey': KEY_geocoder,
@@ -32,10 +30,8 @@ def get_weather(city):
         'geocode': city
     }
     
-    try:
-        response = requests.get(URL_geocoder, params=params)
-    except Exception:
-        return 1
+    
+    response = requests.get(URL_geocoder, params=params)
     
     response = response.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
         'pos'].split()
@@ -47,15 +43,10 @@ def get_weather(city):
               'lang': 'ru_RU',
               'limit': '3',
               'hours': 'true'}
-    try:
-        answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
-    except Exception:
-        return 2
-    try:
-        answer = answer.json()['forecasts'][0]['date']
-    except Exception:
-        return 3
-    return 0
+    
+    answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
+
+    return answer.json()
 
 
 def get_temp_graph(current_weather, day_number):
@@ -134,8 +125,7 @@ def get_text_message(message):
         bot.send_message(message.from_user.id, "Выберите время:", reply_markup=keyboard)
         current_city = message.text
         try:
-            current_weather = get_weather('крым')
-            bot.send_message(message.from_user.id, get_weather('крым'))
+            current_weather = get_weather(current_city)
         except Exception:
             bot.send_message(message.from_user.id, 'Проверь корректность написания населенного пункта и повтори '
                                                    'попытку - /w.')
