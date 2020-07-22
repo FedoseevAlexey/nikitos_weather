@@ -122,7 +122,7 @@ def get_text_message(message):
         bot.send_message(message.from_user.id, "Выберите время:", reply_markup=keyboard)
         current_city = message.text
         try:
-            current_weather = get_weather(current_city)
+            current_weather = get_weather('крым')
         except Exception:
             bot.send_message(message.from_user.id, 'Проверь корректность написания населенного пункта и повтори '
                                                    'попытку - /w.')
