@@ -34,7 +34,7 @@ def get_weather(city):
     
     try:
         response = requests.get(URL_geocoder, params=params)
-    except Exception as err:
+    except Exception:
         return 1
     
     response = response.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
@@ -49,12 +49,12 @@ def get_weather(city):
               'hours': 'true'}
     try:
         answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
-    except Exception as err:
+    except Exception:
         return 2
     try:
         answer = answer.json()['forecasts'][0]['date']
-    except Exception as err:
-        return err
+    except Exception:
+        return 3
     return 0
 
 
