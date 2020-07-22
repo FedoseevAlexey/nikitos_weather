@@ -51,7 +51,11 @@ def get_weather(city):
         answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
     except Exception as err:
         return 2
-    return answer.json()['forecasts'][0]['date']
+    try:
+        answer = answer.json()['forecasts'][0]['date']
+    except Exception as err:
+        return err
+    return 0
 
 
 def get_temp_graph(current_weather, day_number):
