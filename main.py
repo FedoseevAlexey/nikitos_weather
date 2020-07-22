@@ -35,7 +35,7 @@ def get_weather(city):
     try:
         response = requests.get(URL_geocoder, params=params)
     except Exception as err:
-        return err
+        return 1
     
     response = response.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
         'pos'].split()
@@ -50,8 +50,8 @@ def get_weather(city):
     try:
         answer = requests.get(URL_weather, params=params, headers={'X-Yandex-API-Key': KEY_weather})
     except Exception as err:
-        return err
-    return 1
+        return 2
+    return answer.json()['forecasts'][0]['date']
 
 
 def get_temp_graph(current_weather, day_number):
