@@ -3,7 +3,8 @@ import requests
 import os
 import matplotlib.pyplot as plt
 
-bot = telebot.TeleBot('1278679908:AAE3a05hjx318xI1J5Q5LgpWN-R_K_A6ApI')
+token = os.environ.get('BOT_TOKEN')
+bot = telebot.TeleBot(token)
 
 hello_list = ["привет", "здаров", "ку", "здарова", "здравствуйте", "hello", "hey", "шалом", "салам", "прив", "здрасьте"]
 flag = False
@@ -18,9 +19,9 @@ def get_weather(city):
         и возвращает json с параметрами погоды данных координат.
     """
     URL_geocoder = 'https://geocode-maps.yandex.ru/1.x'
-    KEY_geocoder = 'c9f03f5f-1832-4d23-b829-9ed2d2939857'
+    KEY_geocoder = os.environ.get('KEY_GEO')
     URL_weather = 'https://api.weather.yandex.ru/v2/forecast'
-    KEY_weather = '30b3a1e1-af9d-430f-a9ef-3c2d91cbc427'
+    KEY_weather = os.environ.get('KEY_WEATHER')
 
     params = {
         'apikey': KEY_geocoder,
